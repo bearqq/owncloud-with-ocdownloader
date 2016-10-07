@@ -60,7 +60,14 @@ RUN curl -fsSL -o oc.zip \
         && sed -i 's|</id>|</id><default_enable/>|' /dev/shm/ocdownloader-master/appinfo/info.xml \
         && mv /dev/shm/ocdownloader-master /usr/src/owncloud/apps/ocdownloader \
         && rm oc.zip
-
+# 下载安装html5播放器（来自官方插件库）以解决在线看片的问题
+RUN curl -fsSL -o mdzz.zip \
+                "http://d.1006.ml/html5videoplayer.zip" \
+        && rm -rf /dev/shm/html5videoplayer \
+        && unzip mdzz.zip -d /dev/shm \
+        && sed -i 's|</id>|</id><default_enable/>|' /dev/shm/html5videoplayer/appinfo/info.xml \
+        && mv /dev/shm/html5videoplayer /usr/src/owncloud/apps/html5videoplayer \
+        && rm mdzz.zip
 # Download latest youtube-dl binary, need python runtime
 RUN curl -sSL https://yt-dl.org/latest/youtube-dl -o /usr/local/bin/youtube-dl && \
         chmod a+rx /usr/local/bin/youtube-dl
